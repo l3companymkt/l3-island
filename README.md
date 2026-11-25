@@ -1,5 +1,7 @@
 # Claude Island
 
+> **Projeto não oficial.** Não é um produto da Anthropic e não tem vínculo com ela. "Claude" e "Claude Code" são marcas da Anthropic, citadas aqui só para indicar com qual ferramenta o app funciona.
+
 Uma "ilha flutuante" no topo da tela do seu PC (no estilo da ilha dinâmica do iPhone) que acompanha o computador e o Claude Code. Tudo roda **no seu computador**: não há servidor na nuvem, conta ou login.
 
 - **Pílula (compacta):** status do Claude (azul = trabalhando, âmbar = precisa de você) e CPU (verde/âmbar/vermelho).
@@ -85,3 +87,7 @@ Dá para rodar só o servidor e abrir no navegador:
 ```bash
 npm run server
 ```
+
+## Licença
+
+[MIT](LICENSE): pode usar, modificar e distribuir, mantendo o aviso de copyright.

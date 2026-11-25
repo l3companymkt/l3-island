@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Ilha flutuante local: monitor do PC + sessões, permissões e limites do Claude Code.",
   "main": "electron/main.js",
-  "private": true,
   "scripts": {
     "abrir": "node scripts/launch.js",
     "atualizar": "node scripts/update.js",
@@ -21,5 +20,6 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "license": "MIT"
 }
