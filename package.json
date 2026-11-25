@@ -5,16 +5,19 @@
   "main": "electron/main.js",
   "private": true,
   "scripts": {
-    "start": "electron .",
+    "start": "node scripts/ensure-electron.js && electron .",
     "server": "node server/index.js",
     "install-hooks": "node scripts/install-hooks.js",
     "uninstall-hooks": "node scripts/install-hooks.js --remove"
   },
   "dependencies": {
     "qrcode": "1.5.4",
-    "systeminformation": "5.27.11"
+    "systeminformation": "5.33.19"
   },
   "devDependencies": {
-    "electron": "38.2.0"
+    "electron": "45.2.3"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
