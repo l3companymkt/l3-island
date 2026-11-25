@@ -244,7 +244,7 @@
     </div>
     ${isIsland ? `<div class="actions" style="padding-bottom:6px"><button class="btn" id="openBrowser">Abrir no navegador</button><button class="btn danger" id="quit">Sair</button></div>
       <div class="note" style="text-align:center;padding-bottom:8px">Atalho: ${/Mac/.test(navigator.platform) ? '⌘⇧Espaço' : 'Ctrl+Alt+Espaço'} abre e fecha a ilha</div>` : ''}`;
-    if (c.lanAccess && !pairInfo) api('/api/pair').then(r => { pairInfo = r; const q = $('#qr'); if (q) { q.innerHTML = r.svg; $('#pairLink').textContent = r.url; } });
+    if (c.lanAccess && !pairInfo) api('/api/pair').then(r => { if (!r.svg) return; pairInfo = r; const q = $('#qr'); if (q) { q.innerHTML = r.svg; $('#pairLink').textContent = r.url; } });
   }
 
   const saveCfg = body => api('/api/config', body).then(r => { if (r.error) alert(r.error); else { S.config = { ...S.config, ...r }; render(true); } });

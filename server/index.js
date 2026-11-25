@@ -107,6 +107,11 @@ function start() {
       }
       if (p === '/api/state') return json(res, 200, { ...store, config: publicCfg() });
 
+      if (p === '/api/pair') {
+        const link = `http://${lanIp()}:${cfg.port}/?token=${cfg.token}`;
+        const svg = await require('qrcode').toString(link, { type: 'svg', margin: 1, color: { dark: '#000000', light: '#ffffff' } });
+        return json(res, 200, { url: link, svg, lanAccess: cfg.lanAccess });
+      }
       if (req.method !== 'POST') return json(res, 404, {});
       const data = await body(req);
 
@@ -164,11 +169,6 @@ function start() {
         }
         config.save(cfg); refreshClaude(); send('config', publicCfg());
         return json(res, 200, publicCfg());
-      }
-      if (p === '/api/pair') {
-        const link = `http://${lanIp()}:${cfg.port}/?token=${cfg.token}`;
-        const svg = await require('qrcode').toString(link, { type: 'svg', margin: 1, color: { dark: '#e8ecf4', light: '#00000000' } });
-        return json(res, 200, { url: link, svg, lanAccess: cfg.lanAccess });
       }
       return json(res, 404, {});
     } catch (e) {
