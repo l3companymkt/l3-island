@@ -10,6 +10,7 @@
   if (qs.has('token')) history.replaceState(null, '', location.pathname);
 
   const isIsland = !!window.islandBridge;
+  const isLocal = /^(127\.0\.0\.1|localhost|\[::1\])$/.test(location.hostname);
   document.body.classList.add(isIsland ? 'mode-island' : 'mode-page');
   document.documentElement.classList.add(isIsland ? 'mode-island' : 'mode-page');
 
@@ -241,7 +242,8 @@
     <div class="card"><h3>Celular <span>mesma rede Wi‑Fi</span></h3>
       ${c.lanAccess ? `<div class="qr" id="qr">${pairInfo ? pairInfo.svg : ''}</div><div class="link" id="pairLink">${pairInfo ? esc(pairInfo.url) : 'gerando…'}</div>
         <div class="note">Aponte a câmera do celular. O link tem uma chave secreta: não compartilhe.</div>` : '<div class="muted">Acesso pela rede desligado.</div>'}
-      <div class="field" style="margin-top:6px"><label>Permitir acesso pela rede<small>reinicie o app para aplicar</small></label>${sw('lanAccess', c.lanAccess)}</div>
+      ${isLocal ? `<div class="field" style="margin-top:6px"><label>Gerar nova chave<small>desconecta os celulares; escaneie o QR de novo</small></label><button class="btn" id="rotate" style="flex:0 0 auto;padding:0 14px;height:32px">Gerar</button></div>` : ''}
+      <div class="field"><label>Permitir acesso pela rede<small>reinicie o app para aplicar</small></label>${sw('lanAccess', c.lanAccess)}</div>
     </div>
     ${isIsland ? `<div class="actions" style="padding-bottom:6px"><button class="btn" id="openBrowser">Abrir no navegador</button><button class="btn danger" id="quit">Sair</button></div>
       <div class="note" style="text-align:center;padding-bottom:8px">Atalho: ${/Mac/.test(navigator.platform) ? '⌘⇧Espaço' : 'Ctrl+Alt+Espaço'} abre e fecha a ilha</div>` : ''}`;
@@ -266,6 +268,16 @@
       if (confirm('Usar o consumo atual como seu limite real?')) api('/api/usage/calibrate', { which: id === 'calBlock' ? 'block' : 'weekly' }).then(r => { S.config = { ...S.config, ...r }; render(true); });
     }
     if (id === 'openBrowser') window.islandBridge.openExternal();
+    if (id === 'rotate' && confirm('Gerar uma nova chave? Os celulares conectados vão precisar escanear o QR code de novo.')) {
+      api('/api/token/rotate', {}).then(r => {
+        if (!r.token) return alert(r.error || 'Não deu certo.');
+        token = r.token;
+        try { localStorage.setItem('island_token', token); } catch {}
+        pairInfo = null;
+        connect();
+        render(true);
+      });
+    }
     if (id === 'quit') window.islandBridge.quit();
   });
   $('#vWidgets').addEventListener('click', e => {
@@ -349,11 +361,22 @@
   }
 
   // ---------- tempo real ----------
+  let es = null;
   function connect() {
+    if (es) es.close();
     if (!token) { $('#vSystem').innerHTML = '<div class="empty">Abra pelo link com a chave (QR code no app do PC).</div>'; return; }
-    const es = new EventSource(`/api/stream?token=${encodeURIComponent(token)}`);
+    const me = es = new EventSource(`/api/stream?token=${encodeURIComponent(token)}`);
     es.addEventListener('open', () => $('#conn').classList.add('ok'));
-    es.addEventListener('error', () => $('#conn').classList.remove('ok'));
+    es.addEventListener('error', () => {
+      $('#conn').classList.remove('ok');
+      // chave trocada no computador? avisa em vez de ficar tentando
+      api('/api/state').then(r => {
+        if (r.error && me === es) {
+          me.close();
+          document.querySelectorAll('.views section').forEach(s => { s.innerHTML = '<div class="empty">A chave foi trocada no computador.<br>Escaneie o QR code de novo (Ajustes no app do Mac).</div>'; });
+        }
+      }).catch(() => {});
+    });
     es.addEventListener('snapshot', e => {
       Object.assign(S, JSON.parse(e.data));
       $('#hostLine').textContent = `${S.config?.host || ''}${isIsland ? '' : ' · remoto'}`;

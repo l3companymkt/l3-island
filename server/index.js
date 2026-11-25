@@ -67,7 +67,7 @@ function start() {
   setInterval(refreshWeather, 15 * 60e3);
 
   // --- http ----------------------------------------------------------------
-  const tokenBuf = Buffer.from(cfg.token);
+  let tokenBuf = Buffer.from(cfg.token);
   const authed = (req, url) => {
     const h = req.headers.authorization || '';
     const t = (h.startsWith('Bearer ') ? h.slice(7) : '') || req.headers['x-island-token'] || url.searchParams.get('token') || '';
@@ -143,6 +143,18 @@ function start() {
         setTimeout(() => (bus.listenerCount('quit') ? bus.emit('quit') : process.exit(0)), 200);
         return;
       }
+      if (p === '/api/token/rotate') {
+        // só no próprio computador: o celular não pode trocar a chave (e trancar o PC para fora)
+        const ip = req.socket.remoteAddress || '';
+        if (!/^(127\.|::1$|::ffff:127\.)/.test(ip)) return json(res, 403, { error: 'Gere uma nova chave no computador.' });
+        cfg.token = crypto.randomBytes(24).toString('hex');
+        tokenBuf = Buffer.from(cfg.token);
+        config.save(cfg);
+        json(res, 200, { token: cfg.token });
+        for (const c of clients) c.end(); // derruba conexões com a chave antiga (celulares)
+        clients.clear();
+        return;
+      }
       if (p === '/api/media') { await refreshMedia(String(data.cmd || 'get')); return json(res, 200, store.media); }
       if (p === '/api/usage/calibrate') {
         const snap = claude.snapshot(cfg);
@@ -181,8 +193,7 @@ function start() {
     server.once('error', reject);
     server.listen(cfg.port, host, () => resolve());
   });
-  const localUrl = `http://127.0.0.1:${cfg.port}/?token=${cfg.token}`;
-  return { cfg, bus, server, ready, localUrl, stop: () => { media.stop(); server.close(); } };
+  return { cfg, bus, server, ready, get localUrl() { return `http://127.0.0.1:${cfg.port}/?token=${cfg.token}`; }, stop: () => { media.stop(); server.close(); } };
 }
 
 module.exports = { start };
