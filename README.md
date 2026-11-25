@@ -14,10 +14,12 @@ Uma "ilha flutuante" no topo da tela do seu PC (no estilo da ilha dinâmica do i
 
 ## Instalação (uma vez)
 
-Precisa do [Node.js](https://nodejs.org) 18 ou mais novo (`node -v` no Terminal mostra a versão) e do [GitHub CLI](https://cli.github.com) com login feito (`gh auth login`).
+Precisa do [Node.js](https://nodejs.org) 18 ou mais novo (`node -v` no Terminal mostra a versão).
+
+Baixe o ZIP em **Code → Download ZIP** nesta página e leve a pasta para a sua pasta pessoal:
 
 ```bash
-gh repo clone l3companymkt/claude-island ~/claude-island
+mv ~/Downloads/claude-island-main ~/claude-island
 ```
 
 ```bash
@@ -54,7 +56,7 @@ No Mac, na primeira vez o sistema pergunta se o app pode mostrar notificações:
 cd ~/claude-island && npm run atualizar
 ```
 
-Baixa a versão nova, instala o que mudou e reabre a ilha. Precisa ter clonado com o GitHub CLI (`gh auth login` uma vez antes), não pelo ZIP.
+Antes, baixe o ZIP novo (**Code → Download ZIP**) e deixe em Downloads. O comando troca os arquivos, apaga o ZIP de Downloads, instala o que mudou e reabre a ilha. Se a pasta tiver sido clonada com git, ele usa `git pull` no lugar do ZIP.
 
 ## Como funciona
 
