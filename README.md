@@ -3,7 +3,7 @@
 Uma "ilha flutuante" no topo da tela do seu PC (no estilo da ilha dinâmica do iPhone) que acompanha o computador e o Claude Code. Tudo roda **no seu computador**: não há servidor na nuvem, conta ou login.
 
 - **Pílula (compacta):** status do Claude (azul = trabalhando, âmbar = precisa de você) e CPU (verde/âmbar/vermelho).
-- **Clique na pílula** (ou **Ctrl+Alt+Espaço**) para expandir o painel:
+- **Clique na pílula** (ou **Cmd+Shift+Espaço** no Mac, **Ctrl+Alt+Espaço** no Windows) para expandir o painel:
   - **Sistema:** CPU, núcleos, memória, GPU/bateria, rede, discos e processos mais pesados.
   - **Claude:** consumo da janela de 5 horas e da semana, previsão de quando bate o limite, e as sessões abertas.
   - **Widgets:** relógio, música tocando agora (com controles) e previsão do tempo.
@@ -14,10 +14,14 @@ Uma "ilha flutuante" no topo da tela do seu PC (no estilo da ilha dinâmica do i
 
 ## Instalação (uma vez)
 
-Precisa do [Node.js](https://nodejs.org) 18 ou mais novo.
+Precisa do [Node.js](https://nodejs.org) 18 ou mais novo (`node -v` no Terminal mostra a versão).
 
 ```bash
-cd ferramentas/claude-island
+git clone https://github.com/l3companymkt/claude-island.git
+```
+
+```bash
+cd claude-island
 ```
 
 ```bash
@@ -39,6 +43,8 @@ Para remover os hooks:
 ```bash
 npm run uninstall-hooks
 ```
+
+No Mac, na primeira vez o sistema pergunta se o app pode mostrar notificações: permita. A ilha fica logo abaixo da barra de menus e o ícone aparece na barra de menus (não no Dock).
 
 ## Como funciona
 

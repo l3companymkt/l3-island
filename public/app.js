@@ -243,7 +243,7 @@
       <div class="field" style="margin-top:6px"><label>Permitir acesso pela rede<small>reinicie o app para aplicar</small></label>${sw('lanAccess', c.lanAccess)}</div>
     </div>
     ${isIsland ? `<div class="actions" style="padding-bottom:6px"><button class="btn" id="openBrowser">Abrir no navegador</button><button class="btn danger" id="quit">Sair</button></div>
-      <div class="note" style="text-align:center;padding-bottom:8px">Atalho: Ctrl+Alt+Espaço abre e fecha a ilha</div>` : ''}`;
+      <div class="note" style="text-align:center;padding-bottom:8px">Atalho: ${/Mac/.test(navigator.platform) ? '⌘⇧Espaço' : 'Ctrl+Alt+Espaço'} abre e fecha a ilha</div>` : ''}`;
     if (c.lanAccess && !pairInfo) api('/api/pair').then(r => { pairInfo = r; const q = $('#qr'); if (q) { q.innerHTML = r.svg; $('#pairLink').textContent = r.url; } });
   }
 

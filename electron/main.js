@@ -64,7 +64,8 @@ async function boot() {
   ipcMain.on('island:quit', () => app.quit());
   ipcMain.on('island:login', (_e, on) => app.setLoginItemSettings({ openAtLogin: !!on }));
 
-  globalShortcut.register('CommandOrControl+Alt+Space', () => send(mode === 'expanded' ? 'collapse' : 'expand'));
+  const HOTKEY = process.platform === 'darwin' ? 'Command+Shift+Space' : 'Control+Alt+Space';
+  globalShortcut.register(HOTKEY, () => send(mode === 'expanded' ? 'collapse' : 'expand'));
 
   tray = new Tray(trayIcon());
   tray.setToolTip('Claude Island');
