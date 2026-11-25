@@ -1,6 +1,7 @@
 // Monitoramento do computador via systeminformation (100% local).
 const si = require('systeminformation');
 const os = require('os');
+const { execFile } = require('child_process');
 
 const HISTORY = 60;
 const state = {
@@ -58,6 +59,20 @@ async function medium() {
   const c = g && g.controllers && g.controllers.find(x => x.utilizationGpu != null) || (g && g.controllers && g.controllers[0]);
   if (c) state.gpu = { model: c.model, load: c.utilizationGpu ?? null, temp: c.temperatureGpu ?? null,
     memPct: c.memoryTotal && c.memoryUsed ? Math.round(c.memoryUsed / c.memoryTotal * 100) : null };
+  // Apple Silicon: o uso da GPU vem do ioreg (não precisa de senha de administrador)
+  if (process.platform === 'darwin') {
+    const load = await appleGpuLoad();
+    if (load != null) state.gpu = { ...(state.gpu || { model: 'GPU Apple' }), load };
+  }
+}
+
+function appleGpuLoad() {
+  return new Promise(resolve => {
+    execFile('ioreg', ['-r', '-d', '1', '-c', 'IOAccelerator'], { timeout: 3000, maxBuffer: 4e6 }, (err, out) => {
+      const m = !err && /"Device Utilization %"\s*=\s*(\d+)/.exec(out || '');
+      resolve(m ? Math.min(100, Number(m[1])) : null);
+    });
+  });
 }
 
 async function slow() {
