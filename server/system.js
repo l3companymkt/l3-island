@@ -82,7 +82,7 @@ async function slow() {
     if (process.platform === 'darwin') {
       // No macOS os volumes do sistema dividem o mesmo disco; seus arquivos ficam em /System/Volumes/Data
       const data = list.find(d => d.mount === '/System/Volumes/Data');
-      list = list.filter(d => d.mount.startsWith('/Volumes/'));
+      list = list.filter(d => d.mount.startsWith('/Volumes/') && !/^\/Volumes\/(Recovery|Preboot|Update|VM|xarts|iSCPreboot|Hardware)$/i.test(d.mount));
       list.unshift(data ? { ...data, mount: 'Macintosh HD' } : fsz.find(d => d.mount === '/'));
       list = list.filter(Boolean);
     }
