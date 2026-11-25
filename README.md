@@ -14,14 +14,14 @@ Uma "ilha flutuante" no topo da tela do seu PC (no estilo da ilha dinâmica do i
 
 ## Instalação (uma vez)
 
-Precisa do [Node.js](https://nodejs.org) 18 ou mais novo (`node -v` no Terminal mostra a versão).
+Precisa do [Node.js](https://nodejs.org) 18 ou mais novo (`node -v` no Terminal mostra a versão) e do [GitHub CLI](https://cli.github.com) com login feito (`gh auth login`).
 
 ```bash
-git clone https://github.com/l3companymkt/claude-island.git
+gh repo clone l3companymkt/claude-island ~/claude-island
 ```
 
 ```bash
-cd claude-island
+cd ~/claude-island
 ```
 
 ```bash
@@ -47,6 +47,14 @@ npm run uninstall-hooks
 ```
 
 No Mac, na primeira vez o sistema pergunta se o app pode mostrar notificações: permita. A ilha fica logo abaixo da barra de menus e o ícone aparece na barra de menus (não no Dock).
+
+## Atualizar
+
+```bash
+cd ~/claude-island && npm run atualizar
+```
+
+Baixa a versão nova, instala o que mudou e reabre a ilha. Precisa ter clonado com o GitHub CLI (`gh auth login` uma vez antes), não pelo ZIP.
 
 ## Como funciona
 

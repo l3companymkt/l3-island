@@ -110,6 +110,8 @@ async function boot() {
   tray.setContextMenu(menu());
   tray.on('click', () => send(mode === 'expanded' ? 'collapse' : 'expand'));
 
+  srv.bus.on('quit', () => app.quit());
+
   // notificação nativa quando o Claude pede permissão
   srv.bus.on('permission-new', req => {
     if (!Notification.isSupported()) return;

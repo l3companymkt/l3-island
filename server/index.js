@@ -133,6 +133,11 @@ function start() {
         const ok = permissions.finish(id, { decision, message: decision === 'deny' ? (data.message || 'Negado pelo Claude Island.') : undefined });
         return json(res, ok ? 200 : 404, { ok });
       }
+      if (p === '/api/quit') {
+        json(res, 200, { ok: true });
+        setTimeout(() => (bus.listenerCount('quit') ? bus.emit('quit') : process.exit(0)), 200);
+        return;
+      }
       if (p === '/api/media') { await refreshMedia(String(data.cmd || 'get')); return json(res, 200, store.media); }
       if (p === '/api/usage/calibrate') {
         const snap = claude.snapshot(cfg);
