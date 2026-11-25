@@ -11,6 +11,7 @@
 
   const isIsland = !!window.islandBridge;
   document.body.classList.add(isIsland ? 'mode-island' : 'mode-page');
+  document.documentElement.classList.add(isIsland ? 'mode-island' : 'mode-page');
 
   const $ = (s, el = document) => el.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

@@ -20,7 +20,8 @@
 html, body { background: transparent; color: var(--text);
   font: 13px/1.35 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", Inter, Roboto, sans-serif;
   -webkit-font-smoothing: antialiased; user-select: none; overflow: hidden; }
-body.mode-page { background: var(--black); overflow: auto; user-select: text; }
+html.mode-page, body.mode-page { background: var(--black); overflow: visible; overflow-y: auto; height: auto; user-select: text; -webkit-user-select: text; }
+html.mode-page { overflow-x: hidden; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .num { font-variant-numeric: tabular-nums; }
