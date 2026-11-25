@@ -5,6 +5,7 @@
   "main": "electron/main.js",
   "private": true,
   "scripts": {
+    "abrir": "node scripts/launch.js",
     "start": "node scripts/ensure-electron.js && electron .",
     "server": "node server/index.js",
     "install-hooks": "node scripts/install-hooks.js",

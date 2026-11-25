@@ -33,8 +33,10 @@ npm run install-hooks
 ```
 
 ```bash
-npm start
+npm run abrir
 ```
+
+O `npm run abrir` abre a ilha solta do Terminal: depois pode fechar o Terminal. (O `npm start` também abre, mas a ilha fecha junto com o Terminal.) Para ela abrir sempre que o Mac ligar, ative **Iniciar com o computador** em Ajustes ou no ícone da barra de menus.
 
 O `install-hooks` adiciona os hooks do Claude Island no `~/.claude/settings.json` (faz backup antes e mantém os hooks que você já tinha). A partir daí, toda vez que você abrir o Claude Code a ilha abre junto.
 

@@ -78,8 +78,16 @@ function appleGpuLoad() {
 async function slow() {
   const [fsz, bat] = await Promise.all([safe(() => si.fsSize()), safe(() => si.battery())]);
   if (fsz) {
+    let list = fsz.filter(d => d.size > 1e9);
+    if (process.platform === 'darwin') {
+      // No macOS os volumes do sistema dividem o mesmo disco; seus arquivos ficam em /System/Volumes/Data
+      const data = list.find(d => d.mount === '/System/Volumes/Data');
+      list = list.filter(d => d.mount.startsWith('/Volumes/'));
+      list.unshift(data ? { ...data, mount: 'Macintosh HD' } : fsz.find(d => d.mount === '/'));
+      list = list.filter(Boolean);
+    }
     const seen = new Set();
-    state.disks = fsz.filter(d => d.size > 1e9 && !seen.has(d.size + d.fs) && seen.add(d.size + d.fs))
+    state.disks = list.filter(d => !seen.has(d.size + d.fs) && seen.add(d.size + d.fs))
       .slice(0, 4).map(d => ({ name: d.mount || d.fs, size: d.size, used: d.used, pct: Math.round(d.use) }));
   }
   if (bat && bat.hasBattery) state.battery = { pct: bat.percent, charging: bat.isCharging };

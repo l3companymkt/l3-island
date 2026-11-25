@@ -231,7 +231,7 @@
     <div class="card"><h3>Permissões</h3>
       <div class="field"><label>Esperar minha resposta<small>depois disso a pergunta volta pro terminal</small></label><input type="number" id="wait" min="10" max="3600" value="${c.permissionWaitSeconds}" style="width:90px"></div>
       <div class="field"><label>Abrir junto com o Claude<small>quando uma sessão do Claude Code começa</small></label>${sw('autoLaunch', c.autoLaunch)}</div>
-      ${isIsland ? `<div class="field"><label>Iniciar com o computador</label>${sw('login', false)}</div>` : ''}
+      ${isIsland ? `<div class="field"><label>Iniciar com o computador</label>${sw('login', window.islandBridge.getLoginItem && window.islandBridge.getLoginItem())}</div>` : ''}
     </div>
     <div class="card"><h3>Widgets</h3>
       <div class="field"><label>Cidade (tempo)</label><input type="text" id="city" placeholder="ex.: São Paulo" value="${esc(c.weather.city)}"></div>

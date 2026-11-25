@@ -1,6 +1,33 @@
 // Janela flutuante estilo "ilha" no topo da tela.
 const { app, BrowserWindow, Tray, Menu, nativeImage, screen, ipcMain, globalShortcut, Notification, shell } = require('electron');
 const path = require('path');
+const fs = require('fs');
+const os = require('os');
+
+// "Iniciar com o computador". No Mac usa um LaunchAgent, porque o app roda direto da pasta (sem .app instalado).
+const AGENT = path.join(os.homedir(), 'Library', 'LaunchAgents', 'com.claude-island.plist');
+const APP_DIR = path.resolve(__dirname, '..');
+function getLogin() {
+  if (process.platform === 'darwin') return fs.existsSync(AGENT);
+  return app.getLoginItemSettings({ args: [APP_DIR] }).openAtLogin;
+}
+function setLogin(on) {
+  if (process.platform === 'darwin') {
+    if (!on) { try { fs.unlinkSync(AGENT); } catch {} return; }
+    const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    fs.mkdirSync(path.dirname(AGENT), { recursive: true });
+    fs.writeFileSync(AGENT, `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.claude-island</string>
+  <key>ProgramArguments</key><array><string>${esc(process.execPath)}</string><string>${esc(APP_DIR)}</string></array>
+  <key>RunAtLoad</key><true/>
+</dict></plist>
+`);
+    return;
+  }
+  app.setLoginItemSettings({ openAtLogin: !!on, path: process.execPath, args: [APP_DIR] });
+}
 
 if (!app.requestSingleInstanceLock()) { app.quit(); process.exit(0); }
 
@@ -62,7 +89,8 @@ async function boot() {
   ipcMain.on('island:mode', (_e, m) => setMode(m));
   ipcMain.on('island:browser', () => shell.openExternal(srv.localUrl));
   ipcMain.on('island:quit', () => app.quit());
-  ipcMain.on('island:login', (_e, on) => app.setLoginItemSettings({ openAtLogin: !!on }));
+  ipcMain.on('island:login', (_e, on) => { setLogin(on); tray && tray.setContextMenu(menu()); });
+  ipcMain.on('island:login-get', e => { e.returnValue = getLogin(); });
 
   const HOTKEY = process.platform === 'darwin' ? 'Command+Shift+Space' : 'Control+Alt+Space';
   globalShortcut.register(HOTKEY, () => send(mode === 'expanded' ? 'collapse' : 'expand'));
@@ -75,8 +103,8 @@ async function boot() {
     { label: 'Abrir no navegador', click: () => shell.openExternal(srv.localUrl) },
     { label: 'Conectar celular', click: () => send('pair') },
     { type: 'separator' },
-    { label: 'Iniciar com o computador', type: 'checkbox', checked: app.getLoginItemSettings().openAtLogin,
-      click: (i) => app.setLoginItemSettings({ openAtLogin: i.checked }) },
+    { label: 'Iniciar com o computador', type: 'checkbox', checked: getLogin(),
+      click: (i) => setLogin(i.checked) },
     { label: 'Sair', click: () => app.quit() },
   ]);
   tray.setContextMenu(menu());
