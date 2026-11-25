@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Claude Island</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+  <div id="stage">
+    <div id="island" class="compact">
+      <!-- compacto: a pílula -->
+      <div class="pill" id="pill">
+        <div class="pill-l"><span class="dot" id="pillDot"></span><span id="pillLabel">Claude Island</span></div>
+        <div class="pill-r"><span class="wave" id="pillWave"><i></i><i></i><i></i><i></i></span><span id="pillCpu" class="num">--%</span></div>
+      </div>
+
+      <!-- alerta de permissão -->
+      <div class="alert" id="alert"></div>
+
+      <!-- painel expandido -->
+      <div class="panel" id="panel">
+        <header class="top">
+          <div>
+            <div class="clock num" id="clock">--:--</div>
+            <div class="sub" id="hostLine">—</div>
+          </div>
+          <div class="top-r">
+            <span class="conn" id="conn" title="Conexão com o servidor local"></span>
+            <button class="icon-btn only-island" id="btnCollapse" title="Recolher (Ctrl+Alt+Espaço)">
+              <svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>
+            </button>
+          </div>
+        </header>
+        <nav class="tabs" id="tabs">
+          <button data-tab="system" class="on">Sistema</button>
+          <button data-tab="claude">Claude <b class="badge" id="permBadge"></b></button>
+          <button data-tab="widgets">Widgets</button>
+          <button data-tab="settings" aria-label="Ajustes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+        </nav>
+        <main class="views">
+          <section data-view="system" class="on" id="vSystem"></section>
+          <section data-view="claude" id="vClaude"></section>
+          <section data-view="widgets" id="vWidgets"></section>
+          <section data-view="settings" id="vSettings"></section>
+        </main>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

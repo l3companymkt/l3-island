@@ -1,0 +1,20 @@
+{
+  "name": "claude-island",
+  "version": "1.0.0",
+  "description": "Ilha flutuante local: monitor do PC + sessões, permissões e limites do Claude Code.",
+  "main": "electron/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "server": "node server/index.js",
+    "install-hooks": "node scripts/install-hooks.js",
+    "uninstall-hooks": "node scripts/install-hooks.js --remove"
+  },
+  "dependencies": {
+    "qrcode": "1.5.4",
+    "systeminformation": "5.27.11"
+  },
+  "devDependencies": {
+    "electron": "38.2.0"
+  }
+}
