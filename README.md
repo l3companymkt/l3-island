@@ -28,6 +28,12 @@ cd claude-island
 npm install
 ```
 
+Se o `npm install` avisar que pulou o script do `electron` (npm 11 ou mais novo), baixe o Electron com:
+
+```bash
+node node_modules/electron/install.js
+```
+
 ```bash
 npm run install-hooks
 ```
