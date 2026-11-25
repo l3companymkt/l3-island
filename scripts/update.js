@@ -1,6 +1,6 @@
 // Atualiza a ilha e reabre.
 // - Se a pasta veio do git: baixa com "git pull".
-// - Se veio do ZIP: usa o claude-island-main.zip (ou a pasta claude-island-main) que estiver em Downloads.
+// - Se veio do ZIP: usa o l3-island-main.zip (ou a pasta l3-island-main) que estiver em Downloads.
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -14,12 +14,12 @@ if (fs.existsSync(path.join(appDir, '.git'))) {
   sh('git pull --ff-only');
 } else {
   const dl = path.join(os.homedir(), 'Downloads');
-  const items = fs.readdirSync(dl).filter(n => /^claude-island-main/.test(n))
+  const items = fs.readdirSync(dl).filter(n => /^(l3|claude)-island-main/.test(n))
     .map(n => ({ n, p: path.join(dl, n), t: fs.statSync(path.join(dl, n)).mtimeMs }))
     .sort((a, b) => b.t - a.t);
   const pick = items[0];
   if (!pick) {
-    console.error('Não achei o claude-island-main.zip em Downloads.\nBaixe em github.com/l3companymkt/claude-island → Code → Download ZIP e rode de novo.');
+    console.error('Não achei o l3-island-main.zip em Downloads.\nBaixe em github.com/l3companymkt/l3-island → Code → Download ZIP e rode de novo.');
     process.exit(1);
   }
   let src = pick.p;
@@ -27,11 +27,11 @@ if (fs.existsSync(path.join(appDir, '.git'))) {
   if (pick.n.endsWith('.zip')) {
     if (process.platform === 'darwin') execFileSync('ditto', ['-x', '-k', src, tmp]);
     else execFileSync('unzip', ['-q', src, '-d', tmp]);
-    const inner = fs.readdirSync(tmp).find(n => n.startsWith('claude-island'));
+    const inner = fs.readdirSync(tmp).find(n => /^(l3|claude)-island/.test(n));
     src = inner ? path.join(tmp, inner) : tmp;
   }
   if (!fs.existsSync(path.join(src, 'package.json')) || !fs.existsSync(path.join(src, 'electron', 'main.js'))) {
-    console.error(`${pick.n} não parece ser o Claude Island. Nada foi alterado.`);
+    console.error(`${pick.n} não parece ser o L3 Island. Nada foi alterado.`);
     process.exit(1);
   }
   for (const name of fs.readdirSync(src)) {

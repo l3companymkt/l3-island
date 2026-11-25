@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Hook do Claude Code -> Claude Island. Usa só módulos nativos do Node.
+// Hook do Claude Code -> L3 Island. Usa só módulos nativos do Node.
 // - SessionStart: abre a ilha se ela não estiver aberta (autoLaunch)
 // - PermissionRequest: espera você permitir/negar na ilha ou no celular
 // - Demais eventos: atualiza o status das sessões
@@ -10,7 +10,8 @@ const path = require('path');
 const http = require('http');
 const { spawn } = require('child_process');
 
-const CFG_FILE = path.join(os.homedir(), '.claude-island', 'config.json');
+const CFG_FILE = [path.join(os.homedir(), '.l3-island', 'config.json'), path.join(os.homedir(), '.claude-island', 'config.json')]
+  .find(f => fs.existsSync(f)) || '';
 
 function readStdin() {
   return new Promise(resolve => {
@@ -74,7 +75,7 @@ function launch(cfg) {
       const r = await post(cfg, '/api/hook/permission', ev, wait);
       if (r && (r.decision === 'allow' || r.decision === 'deny')) {
         const decision = { behavior: r.decision };
-        if (r.decision === 'deny') decision.message = r.message || 'Negado pelo Claude Island.';
+        if (r.decision === 'deny') decision.message = r.message || 'Negado pelo L3 Island.';
         process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'PermissionRequest', decision } }));
       }
     } catch { /* ilha fechada: o Claude mostra a pergunta normal no terminal */ }

@@ -1,4 +1,4 @@
-// Servidor local do Claude Island: API + eventos em tempo real (SSE) + arquivos da interface.
+// Servidor local do L3 Island: API + eventos em tempo real (SSE) + arquivos da interface.
 const http = require('http');
 const fs = require('fs');
 const os = require('os');
@@ -94,7 +94,7 @@ function start() {
           res.end(data);
         });
       }
-      if (p === '/api/health') return json(res, 200, { ok: true, app: 'claude-island' });
+      if (p === '/api/health') return json(res, 200, { ok: true, app: 'l3-island' });
       if (!authed(req, url)) return json(res, 401, { error: 'token inválido' });
 
       if (p === '/api/stream') {
@@ -135,7 +135,7 @@ function start() {
       if (p.startsWith('/api/permissions/')) {
         const id = p.split('/').pop();
         const decision = ['allow', 'deny', 'ask'].includes(data.decision) ? data.decision : 'ask';
-        const ok = permissions.finish(id, { decision, message: decision === 'deny' ? (data.message || 'Negado pelo Claude Island.') : undefined });
+        const ok = permissions.finish(id, { decision, message: decision === 'deny' ? (data.message || 'Negado pelo L3 Island.') : undefined });
         return json(res, ok ? 200 : 404, { ok });
       }
       if (p === '/api/quit') {
@@ -190,7 +190,7 @@ module.exports = { start };
 if (require.main === module) {
   const s = start();
   s.ready.then(() => {
-    console.log(`Claude Island rodando em ${s.localUrl}`);
+    console.log(`L3 Island rodando em ${s.localUrl}`);
     if (s.cfg.lanAccess) console.log(`No celular (mesma rede Wi‑Fi): http://${lanIp()}:${s.cfg.port}/?token=${s.cfg.token}`);
   }).catch(e => { console.error('Não consegui iniciar:', e.message); process.exit(1); });
 }

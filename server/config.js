@@ -1,10 +1,12 @@
-// Configuração local do Claude Island: ~/.claude-island/config.json
+// Configuração local do L3 Island: ~/.l3-island/config.json
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const crypto = require('crypto');
 
-const DIR = path.join(os.homedir(), '.claude-island');
+const DIR = path.join(os.homedir(), '.l3-island');
+const OLD_DIR = path.join(os.homedir(), '.claude-island'); // nome antigo do projeto
+try { if (!fs.existsSync(DIR) && fs.existsSync(OLD_DIR)) fs.renameSync(OLD_DIR, DIR); } catch {}
 const FILE = path.join(DIR, 'config.json');
 
 // Limites por janela são ESTIMATIVAS: a Anthropic não publica limites em tokens.

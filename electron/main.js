@@ -5,7 +5,9 @@ const fs = require('fs');
 const os = require('os');
 
 // "Iniciar com o computador". No Mac usa um LaunchAgent, porque o app roda direto da pasta (sem .app instalado).
-const AGENT = path.join(os.homedir(), 'Library', 'LaunchAgents', 'com.claude-island.plist');
+const AGENT = path.join(os.homedir(), 'Library', 'LaunchAgents', 'com.l3-island.plist');
+const OLD_AGENT = path.join(os.homedir(), 'Library', 'LaunchAgents', 'com.claude-island.plist');
+try { if (fs.existsSync(OLD_AGENT)) fs.unlinkSync(OLD_AGENT); } catch {} // nome antigo
 const APP_DIR = path.resolve(__dirname, '..');
 function getLogin() {
   if (process.platform === 'darwin') return fs.existsSync(AGENT);
@@ -19,7 +21,7 @@ function setLogin(on) {
     fs.writeFileSync(AGENT, `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
-  <key>Label</key><string>com.claude-island</string>
+  <key>Label</key><string>com.l3-island</string>
   <key>ProgramArguments</key><array><string>${esc(process.execPath)}</string><string>${esc(APP_DIR)}</string></array>
   <key>RunAtLoad</key><true/>
 </dict></plist>
@@ -96,7 +98,7 @@ async function boot() {
   globalShortcut.register(HOTKEY, () => send(mode === 'expanded' ? 'collapse' : 'expand'));
 
   tray = new Tray(trayIcon());
-  tray.setToolTip('Claude Island');
+  tray.setToolTip('L3 Island');
   const menu = () => Menu.buildFromTemplate([
     { label: 'Abrir painel', click: () => send('expand') },
     { label: 'Mostrar / ocultar ilha', click: () => (win.isVisible() ? setMode('hidden') : setMode('compact')) },
@@ -129,5 +131,5 @@ app.on('second-instance', () => send('expand'));
 app.on('window-all-closed', e => e.preventDefault());
 app.on('will-quit', () => { globalShortcut.unregisterAll(); if (srv) srv.stop(); });
 if (process.platform === 'darwin' && app.dock) app.dock.hide();
-if (process.platform === 'win32') app.setAppUserModelId('Claude Island');
+if (process.platform === 'win32') app.setAppUserModelId('L3 Island');
 app.whenReady().then(boot);

@@ -1,4 +1,4 @@
-# Claude Island
+# L3 Island
 
 > **Projeto não oficial.** Não é um produto da Anthropic e não tem vínculo com ela. "Claude" e "Claude Code" são marcas da Anthropic, citadas aqui só para indicar com qual ferramenta o app funciona.
 
@@ -21,11 +21,11 @@ Precisa do [Node.js](https://nodejs.org) 18 ou mais novo (`node -v` no Terminal 
 Baixe o ZIP em **Code → Download ZIP** nesta página e leve a pasta para a sua pasta pessoal:
 
 ```bash
-mv ~/Downloads/claude-island-main ~/claude-island
+mv ~/Downloads/l3-island-main ~/l3-island
 ```
 
 ```bash
-cd ~/claude-island
+cd ~/l3-island
 ```
 
 ```bash
@@ -42,7 +42,7 @@ npm run abrir
 
 O `npm run abrir` abre a ilha solta do Terminal: depois pode fechar o Terminal. (O `npm start` também abre, mas a ilha fecha junto com o Terminal.) Para ela abrir sempre que o Mac ligar, ative **Iniciar com o computador** em Ajustes ou no ícone da barra de menus.
 
-O `install-hooks` adiciona os hooks do Claude Island no `~/.claude/settings.json` (faz backup antes e mantém os hooks que você já tinha). A partir daí, toda vez que você abrir o Claude Code a ilha abre junto.
+O `install-hooks` adiciona os hooks do L3 Island no `~/.claude/settings.json` (faz backup antes e mantém os hooks que você já tinha). A partir daí, toda vez que você abrir o Claude Code a ilha abre junto.
 
 Para remover os hooks:
 
@@ -55,7 +55,7 @@ No Mac, na primeira vez o sistema pergunta se o app pode mostrar notificações:
 ## Atualizar
 
 ```bash
-cd ~/claude-island && npm run atualizar
+cd ~/l3-island && npm run atualizar
 ```
 
 Antes, baixe o ZIP novo (**Code → Download ZIP**) e deixe em Downloads. O comando troca os arquivos, apaga o ZIP de Downloads, instala o que mudou e reabre a ilha. Se a pasta tiver sido clonada com git, ele usa `git pull` no lugar do ZIP.
@@ -76,7 +76,7 @@ Antes, baixe o ZIP novo (**Code → Download ZIP**) e deixe em Downloads. O coma
 
 ## Segurança
 
-- A configuração e a chave de acesso ficam em `~/.claude-island/config.json`. **Não compartilhe** o link ou o QR code: quem tiver a chave pode aprovar comandos do Claude.
+- A configuração e a chave de acesso ficam em `~/.l3-island/config.json`. **Não compartilhe** o link ou o QR code: quem tiver a chave pode aprovar comandos do Claude.
 - O acesso pelo celular só funciona na mesma rede. Em rede pública (café, aeroporto), desligue **"Permitir acesso pela rede"** em Ajustes. Para usar fora de casa sem nuvem, uma opção é a [Tailscale](https://tailscale.com) (VPN direta entre seus aparelhos).
 - No Windows, na primeira vez o Firewall pergunta se o app pode usar a rede: permita em **redes privadas** para o celular funcionar.
 

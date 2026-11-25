@@ -1,4 +1,4 @@
-// Claude Island — interface (ilha no PC e página no celular)
+// L3 Island — interface (ilha no PC e página no celular)
 (() => {
   // ---------- token / modo ----------
   const qs = new URLSearchParams(location.search);
@@ -304,7 +304,7 @@
   function renderPill() {
     const s = S.system, c = S.claude;
     if (s) { const el = $('#pillCpu'); el.textContent = `${s.cpu.load}%`; el.style.color = level(s.cpu.load); }
-    let status = 'idle', label = 'Claude Island';
+    let status = 'idle', label = 'L3 Island';
     if (c) {
       const act = c.sessions.filter(x => x.status === 'working' || x.status === 'waiting');
       if (S.permissions.length) { status = 'waiting'; label = 'Precisa de você'; }
@@ -367,7 +367,7 @@
       const prev = S.permissions.length;
       S.permissions = JSON.parse(e.data);
       if (S.permissions.length > prev) ping();
-      if (!S.permissions.length && !isIsland) document.title = 'Claude Island';
+      if (!S.permissions.length && !isIsland) document.title = 'L3 Island';
       render(true); renderAlert();
     });
   }

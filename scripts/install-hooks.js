@@ -1,4 +1,4 @@
-// Instala (ou remove com --remove) os hooks do Claude Island em ~/.claude/settings.json.
+// Instala (ou remove com --remove) os hooks do L3 Island em ~/.claude/settings.json.
 // Faz backup do arquivo antes de alterar e preserva os hooks que você já tem.
 const fs = require('fs');
 const os = require('os');
@@ -48,4 +48,4 @@ if (!Object.keys(settings.hooks).length) delete settings.hooks;
 
 fs.mkdirSync(claudeDir, { recursive: true });
 fs.writeFileSync(file, JSON.stringify(settings, null, 2));
-console.log(remove ? 'Hooks do Claude Island removidos.' : `Hooks instalados em ${file}\nToken e porta em ${config.FILE}`);
+console.log(remove ? 'Hooks do L3 Island removidos.' : `Hooks instalados em ${file}\nToken e porta em ${config.FILE}`);

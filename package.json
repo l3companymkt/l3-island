@@ -1,5 +1,5 @@
 {
-  "name": "claude-island",
+  "name": "l3-island",
   "version": "1.0.0",
   "description": "Ilha flutuante local: monitor do PC + sessões, permissões e limites do Claude Code.",
   "main": "electron/main.js",
